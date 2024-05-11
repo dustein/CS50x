@@ -1,5 +1,6 @@
 #include <cs50.h>
 #include <stdio.h>
+#include <string.h>
 
 // Max voters and candidates
 #define MAX_VOTERS 100
@@ -52,6 +53,7 @@ int main(int argc, string argv[])
         candidates[i].name = argv[i + 1];
         candidates[i].votes = 0;
         candidates[i].eliminated = false;
+        printf("candidate %i - %s\n", i, candidates[i].name);
     }
 
     voter_count = get_int("Number of voters: ");
@@ -76,8 +78,12 @@ int main(int argc, string argv[])
                 printf("Invalid vote.\n");
                 return 4;
             }
+            //computa voto de um rank
+            printf("voter %i votou no candidato %i\n", i, preferences[i][j]);
+            printf("candidato %i tem %i votos\n", preferences[i][j], candidates[preferences[i][j]].votes);
+            // teste
+            tabulate();
         }
-
         printf("\n");
     }
 
@@ -85,7 +91,7 @@ int main(int argc, string argv[])
     while (true)
     {
         // Calculate votes given remaining candidates
-        tabulate();
+        //tabulate();
 
         // Check if election has been won
         bool won = print_winner();
@@ -127,6 +133,17 @@ int main(int argc, string argv[])
 bool vote(int voter, int rank, string name)
 {
     // TODO
+    for (int i = 0; i < candidate_count; i++)
+    {
+        if (strcmp(name, candidates[i].name) == 0)
+        {
+            //cria voto pro nome informado
+            preferences[voter][rank] = i;
+            candidates[i].votes++;
+            printf("voto pro candidato %i\n", preferences[voter][rank]);
+            return 1;
+        }
+    }
     return false;
 }
 
@@ -134,6 +151,14 @@ bool vote(int voter, int rank, string name)
 void tabulate(void)
 {
     // TODO
+    printf("preferences[0][0] : %i\n", preferences[0][0]);
+    printf("preferences[0][1] : %i\n", preferences[0][1]);
+    printf("preferences[0][2] : %i\n", preferences[0][2]);
+
+    printf("preferences[1][0] : %i\n", preferences[1][0]);
+    printf("preferences[1][1] : %i\n", preferences[1][1]);
+    printf("preferences[1][2] : %i\n", preferences[1][2]);
+
     return;
 }
 

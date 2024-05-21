@@ -78,10 +78,6 @@ int main(int argc, string argv[])
                 printf("Invalid vote.\n");
                 return 4;
             }
-            //computa voto de um rank
-            printf("voter %i votou no candidato %i\n", i, preferences[i][j]);
-            // // teste
-            // tabulate();
         }
         printf("\n");
     }
@@ -136,7 +132,7 @@ bool vote(int voter, int rank, string name)
     {
         if (strcmp(name, candidates[i].name) == 0)
         {
-            //cria voto pro nome informado
+            // cria voto pro nome informado
             preferences[voter][rank] = i;
             return 1;
         }
@@ -148,24 +144,20 @@ bool vote(int voter, int rank, string name)
 void tabulate(void)
 {
     // TODO
-    int vote_for;
-    //loop por todos os votantes
     for (int i = 0; i < voter_count; i++)
     {
-        //loop por todos os candidatos
         for (int j = 0; j < candidate_count; j++)
         {
-            int voto = preferences[i][j];
-            //se o canidato nao estiver eliminado
-            if (!candidates[j].eliminated)
+            if (candidates[preferences[i][j]].eliminated == true)
             {
-                if (preferences[i][j] == j)
-                {
-                    candidates[j].votes++;
-                    printf("candidato %i votos %i\n", j,candidates[j].votes);
-                    break;
-                }
-
+                printf("candidato %s ja foi eliminado...\n", candidates[preferences[i][j]].name);
+            }
+            else
+            {
+                candidates[preferences[i][j]].votes++;
+                printf("Candidato %s agora com %i votos.\n", candidates[preferences[i][j]].name,
+                       candidates[preferences[i][j]].votes);
+                break;
             }
         }
     }
@@ -177,11 +169,11 @@ bool print_winner(void)
 {
     // TODO
     int half_votes = voter_count / 2;
-    for (int i = 0; i < voter_count; i++)
+    for (int i = 0; i < candidate_count; i++)
     {
         if (candidates[i].votes > half_votes)
         {
-            printf("candidato %s venceu. Mais da metade dos votos.\n", candidates[i].name);
+            printf("%s\n", candidates[i].name);
             return true;
         }
     }
@@ -192,25 +184,50 @@ bool print_winner(void)
 int find_min(void)
 {
     // TODO
-    int min = candidate_count;
-    for (int i =0; i < candidate_count; i++)
+    int min;
+    for (int i = 0; i < candidate_count; i++)
     {
         if (!candidates[i].eliminated)
         {
-            if (candidates[i].votes < min)
+            if (i == 0)
             {
                 min = candidates[i].votes;
             }
+            else
+            {
+                if (candidates[i].votes < min)
+                {
+                    min = candidates[i].votes;
+                }
+            }
+            printf("candidato %s tem %i votos\n", candidates[i].name, candidates[i].votes);
         }
     }
     printf("Minimo de votos = %i", min);
-    return 0;
+    return min;
 }
 
 // Return true if the election is tied between all candidates, false otherwise
 bool is_tie(int min)
 {
     // TODO
+    int eliminate = 0;
+    int count = 0;
+    for (int i = 0; i < candidate_count; i++)
+    {
+        if (!candidates[i].eliminated)
+        {
+            eliminate++;
+        }
+        if (candidates[i].votes == min)
+        {
+            count++;
+        }
+    }
+    if (eliminate == count)
+    {
+        return true;
+    }
     return false;
 }
 
@@ -218,5 +235,12 @@ bool is_tie(int min)
 void eliminate(int min)
 {
     // TODO
+    for (int i = 0; i < candidate_count; i++)
+    {
+        if (candidates[i].votes == min)
+        {
+            candidates[i].eliminated = true;
+        }
+    }
     return;
 }

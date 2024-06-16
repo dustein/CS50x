@@ -2,7 +2,7 @@
 #include <math.h>
 
 int sepia_round(float pixel);
-void swap(int* a, int* b);
+void swap(RGBTRIPLE* p, RGBTRIPLE* q);
 
 // Convert image to grayscale
 void grayscale(int height, int width, RGBTRIPLE image[height][width])
@@ -61,13 +61,9 @@ void reflect(int height, int width, RGBTRIPLE image[height][width])
 {
     for (int i = 0; i < height; i++)
     {
-        int* pointer = image[i];
-        int* pointer2 = image[i] + width - 1;
-        while (pointer1 < pointer2)
+        for (int j = 0; j < width / 2; j++)
         {
-            swap(pointer1, pointer2);
-            pointer1 ++;
-            pointer2 --;
+            swap(&image[i][j], &image[i][width-1-j]);
         }
     }
     return;
@@ -93,10 +89,10 @@ int sepia_round(float pixel)
     }
 }
 
-//funcao swap
-void swap(int* a, int* b)
+// funcao swap
+void swap(RGBTRIPLE* p, RGBTRIPLE* q)
 {
-    int temporario = *a;
-    *a = *b;
-    *b = temporario;
+    RGBTRIPLE temp = *p;
+    *p = *q;
+    *q = temp;
 }

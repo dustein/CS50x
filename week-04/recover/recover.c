@@ -14,29 +14,41 @@ int main(int argc, char *argv[])
         return 1;
     }
     // Open the memory card
-    FILE *card = fopen(argv[1], "r");
-    if (card == NULL)
+    FILE *cartao_memoria = fopen(argv[1], "r");
+    if (cartao_memoria == NULL)
     {
         //printf("Couldn`t open %s", card);
         printf("Could Not Open Card");
         return 0;
     }
     // While there's still data left to read from the memory card
-    uint8_t buffer[512];
+    //aloca memoria de 512KB pro buffer
+    uint8_t buffer[BLOCK_SIZE];
+    //aloca memoria pra os filenames
+    char filename[8];
+    //imagem sera o novo arquivo no qual vamos escrever
+    FILE* imagem_pointer =  NULL;
     int file_num = 0;
-    while (fread(&buffer, sizeof(BLOCK_SIZE), 1, card) == BLOCK_SIZE)
+    //vamos ler o card, usando tamanho BLOCK_SIZE, 1 por vez,
+    while (fread(&buffer, BLOCK_SIZE, 1, cartao_memoria) == 1)
     {
         //if tiver esses bytes no bloco de 512KB, é o início de um jpg
-        if (buffer[0] == 0xff & buffer[1] == 0xd8 && buffer[2] == 0xff && ((buffer[3] & 0xf0) == 0xe0))
+        if (buffer[0] == 0xff && buffer[1] == 0xd8 && buffer[2] == 0xff && ((buffer[3] & 0xf0) == 0xe0))
         {
-            // Create JPEGs from the data
-            FILE* imagem = fopen(imagem, "w");
-            fprintf(imagem, "%03i.jpg", file_num);
-            fwrite(&buffer, sizeof(BLOCK_SIZE), 1, imagem);
-            fclose(imagem);
+            if (file_num != 0)
+            {
+                fclose(imagem_pointer);
+            }
+            //iniciar arquivo
+            fprintf(filename, "%03i.jpg", file_num);
+            imagem_pointer = fopen(filename, "w");
             file_num++;
-
         }
-    }
-    fclose(card);
+        // se encontrou jpg comecar a escrever no arquivo
+        if (file_num != 0)
+        {
+            fwrite(&buffer, BLOCK_SIZE, 1, imagem_pointer);
+            }
+    fclose(cartao_memoria);
+    fclose(imagem_pointer);
 }

@@ -9,7 +9,6 @@ def main():
         print("You must inform TWO parameter (csv file)")
         sys.exit()
 
-
     # TODO: Read database file into a variable
     with open(sys.argv[1]) as dados:
         linhas = csv.DictReader(dados)

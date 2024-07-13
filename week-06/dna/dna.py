@@ -4,21 +4,32 @@ import sys
 
 def main():
 
+    database = []
+    individuo = []
+
     # TODO: Check for command-line usage
     if (len(sys.argv) != 3):
         print("You must inform TWO parameter (csv file)")
         sys.exit()
 
     # TODO: Read database file into a variable
+    #
     with open(sys.argv[1]) as dados:
         linhas = csv.DictReader(dados)
         for linha in linhas:
-            print(linha['name'])
+            database.append(linha)
 
     # TODO: Read DNA sequence file into a variable
+    #
+    with open(sys.argv[2]) as sequencia:
+        sequencia_pessoa = csv.reader(sequencia)
+        for pessoa in sequencia_pessoa:
+            individuo.append(pessoa)
 
     # TODO: Find longest match of each STR in DNA sequence
-
+    #
+    resultado = longest_match(database, individuo)
+    print(resultado)
     # TODO: Check database for matching profiles
 
     return

@@ -14,23 +14,41 @@ def main():
 
     # TODO: Read database file into a variable
     #
-    with open(sys.argv[1]) as dados:
-        linhas = csv.DictReader(dados)
-        for linha in linhas:
+    with open(sys.argv[1]) as arquivo_csv:
+        dados = csv.DictReader(arquivo_csv)
+        for linha in dados:
             database.append(linha)
+        # print(database)
 
     # TODO: Read DNA sequence file into a variable
     #
-    with open(sys.argv[2]) as sequencia:
-        sequencia_pessoa = csv.reader(sequencia)
-        for pessoa in sequencia_pessoa:
-            individuo.append(pessoa)
+    with open(sys.argv[2], encoding="utf-8") as sequencia:
+        sequencia_pessoa = sequencia.read()
 
     # TODO: Find longest match of each STR in DNA sequence
     #
-    resultado = longest_match(database, individuo)
-    print(resultado)
+    lista_str = dados.fieldnames
+    lista_str.remove('name')
+
+    pessoa_dna = {}
+    for tipo in lista_str:
+        pessoa_dna[tipo] = longest_match(sequencia_pessoa, tipo)
+    # print(pessoa_dna)
+
     # TODO: Check database for matching profiles
+    #
+    for pessoa in database:
+        correspondencia = True
+        for tipo in lista_str:
+            if (int(pessoa[tipo]) != pessoa_dna[tipo]):
+                correspondencia = False
+                break
+
+        if correspondencia == True:
+            print(pessoa['name'])
+            sys.exit()
+
+    print('No match')
 
     return
 

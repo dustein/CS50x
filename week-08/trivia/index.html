@@ -5,8 +5,80 @@
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
         <link href="styles.css" rel="stylesheet">
         <title>Trivia!</title>
+        <!--
         <script>
             // TODO: Add code to check answers to questions
+            document.addEventListener('DOMContentLoaded', function() {
+                let corrects = document.querySelectorAll('.correct');
+
+                for (let i = 0; i < corrects.lenght; i++) {
+                    corrects[i].addEventListener('click', function() {
+                        corrects[i].style.backgroundColor = 'Green';
+                        corrects[i].parentElement.querySelector('.feedback').innerHTML = 'Correct!';
+                    })
+                }
+
+                let incorrects = document.querySelectorAll('.incorrect');
+                for (let i = 0; i < incorrects.lenght; i++) {
+                    incorrects[i].addEventListener('click', function() {
+                        incorrects[i].style.backgroundColor = 'Red';
+                        incorrects[i].parentElement.querySelector('.feedback').innerHTML = 'Incorrect!';
+                    })
+                }
+
+
+            })
+        </script>
+        -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+
+                let corrects = document.querySelectorAll('.correct');
+
+                for (let i = 0; i < corrects.length; i++) {
+                    corrects[i].addEventListener('click', function() {
+
+                        corrects[i].style.backgroundColor = 'Green';
+                        corrects[i].parentElement.querySelector('.feedback').innerHTML = 'Correct!';
+                    });
+                }
+
+                let incorrects = document.querySelectorAll(".incorrect");
+                for (let i = 0; i < incorrects.length; i++) {
+                    incorrects[i].addEventListener('click', function() {
+
+                        incorrects[i].style.backgroundColor = 'Red';
+
+                        incorrects[i].parentElement.querySelector('.feedback').innerHTML = 'Incorrect';
+                    });
+                }
+
+                document.querySelector('#check').addEventListener('click', function() {
+                    let input = document.querySelector('input');
+                    if (input.value === 'Switzerland') {
+                        input.style.backgroundColor = 'green';
+                        input.parentElement.querySelector('.feedback').innerHTML = 'Correct!';
+                    }
+                    else {
+                        input.style.backgroundColor = 'red';
+                        input.parentElement.querySelector('.feedback').innerHTML = 'Incorrect';
+                    }
+                });
+            });
+
+            function checkQuestion(event) {
+                let button = event.target;
+                let input = button.parentElement.querySelector("input");
+
+                if (input.value == "Fluminense") {
+                    input.style.backgroundColor = 'Green';
+                    input.parentElement.querySelector('.feedback').innerHTML = 'Correct!';
+                }
+                else {
+                    input.style.backgroundColor = 'Red';
+                    input.parentElement.querySelector('.feedback').innerHTML = 'Incorrect...';
+                }
+            }
         </script>
     </head>
     <body>
@@ -18,11 +90,20 @@
             <div class="section">
                 <h2>Part 1: Multiple Choice </h2>
                 <hr>
-                <!-- TODO: Add multiple choice question here -->
+                <h3>Wich was the the first Brazilian club to carry football in its name and has become one of the most popular in the country?</h3>
+                <button class="incorrect">Bangu Atlético Clube</button>
+                <button class="correct">Fluminense Football Club</button>
+                <button class="incorrect">Gremio de Porto Alegre</button>
+                <button class="incorrect">Esporte Clube Bahia</button>
+                <p class="feedback"></p>
             </div>
 
             <div class="section">
                 <h2>Part 2: Free Response</h2>
+                <h3>Wich club the International Olympic Committee recognized as the most complete sports institution in the world, honoring the club with the Olympic Cup?</h3>
+                <input type="text" />
+                <button onClick = "checkQuestion(event)">Check Answer</button>
+                <p class="feedback"></p>
                 <hr>
                 <!-- TODO: Add free response question here -->
             </div>

@@ -16,7 +16,7 @@ body {
 }
 
 .header {
-    background-color: #477bff;
+    background-color: green;
     color: #fff;
     margin-bottom: 2rem;
     padding: 2rem 1rem;
@@ -38,7 +38,7 @@ h1 {
 }
 
 button, input[type="submit"] {
-    background-color: #d9edff;
+    background-color: #b8e6bf;
     border: 1px solid transparent;
     border-radius: 0.25rem;
     font-size: 0.95rem;

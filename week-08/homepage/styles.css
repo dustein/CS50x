@@ -1,3 +1,7 @@
+html {
+  min-width: 300px;
+}
+
 body {
   display: flex;
   justify-content: space-between;
@@ -5,7 +9,6 @@ body {
   margin: 0;
   background-color: black;
   height: 100vh;
-  min-width: 300px;
 }
 
 nav {
@@ -65,7 +68,7 @@ footer p {
 
 .like {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-around;
 }
 .likes {
@@ -95,16 +98,74 @@ footer p {
   float: left;
 }
 
-@media (max-width: 800px) {
+
+
+
+/* MODAL  */
+
+.meu-modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.meu-modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+/* The Close Button */
+.close-modal {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close-modal:hover,
+.close-modal:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+
+
+
+
+@media (min-width: 800px) {
 
   .like {
-      flex-direction: column;
+      flex-direction: row;
       flex-wrap: wrap;
   }
 
   .likes {
       padding-bottom: 1rem;
-      border: solid 0.2px #9DD9E4;
+      border: solid 1px #9DD9E4;
       margin: 0.1rem;
+  }
+
+  .free-text {
+      font-size: 1.5rem;
+      padding-left: 3em;
+      padding-right: 3em;
+  }
+
+  #foto-du {
+      margin: 3.2rem;
   }
 }

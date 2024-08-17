@@ -40,33 +40,44 @@
 
             <section class="like">
 
-                <div class="likes">
-                    <h3>Footbal</h3>
-                    <img class="foto" src="https://yt3.googleusercontent.com/ytc/AIdro_nNYinaLuPFoPatbajonncYgt85Tt-4S4CrlIEaDN80TuQ=s900-c-k-c0x00ffffff-no-rj"/>
-                    <figcaption>Fluminense</figcaption>
+                <!-- Trigger/Open The Modal -->
+                <button id="liga-modal">Open Modal</button>
+                <!-- The Modal -->
+                <div id="janela-modal" class="meu-modal">
+                    <!-- Modal content -->
+                    <div class="meu-modal-content">
+                        <span class="close-modal">&times;</span>
+                        <p id="texto-modal">Some text in the Modal..</p>
+                    </div>
                 </div>
 
-                <div class="likes">
+
+                <div class="likes" id="football">
+                    <button onclick="choose_like(e)">
+                        <h3>Footbal</h3>
+                        <img class="foto" src="https://yt3.googleusercontent.com/ytc/AIdro_nNYinaLuPFoPatbajonncYgt85Tt-4S4CrlIEaDN80TuQ=s900-c-k-c0x00ffffff-no-rj"/>
+                        <figcaption>Fluminense</figcaption>
+                    </button>
+                </div>
+
+                <div class="likes" id="music" onclick="choose_like(e)">
                     <h3>Music</h3>
                     <img class="foto" src="https://cdn11.bigcommerce.com/s-etaxb7aidf/images/stencil/1280x1280/products/3780/7506/ST8915__93916.1588886055.png?c=1"/>
                     <figcaption>Ramones</figcaption>
                 </div>
 
-                <div class="likes">
+                <div class="likes" id="adventure">
                     <h3>Adventure</h3>
                     <img class="foto" src="https://advanywhere.com/wp-content/uploads/2021/09/DSC00355-1920x1280.jpg"/>
                     <figcaption>Motorcycle</figcaption>
                 </div>
 
-                <div class="likes">
-                    <h3>Doing</h3>
+                <div class="likes" id="ido">
+                    <h3>I Do</h3>
                     <img class="foto" src="https://www.espine.in/blog/wp-content/uploads/2022/08/software-developer.jpg"/>
                     <figcaption>Programing</figcaption>
                 </div>
 
-                <div class="infoModal" id="meuModal" onClick="modalToggle()">
-                    <button>AQUI ESTA</button>
-                </div>
 
 
 

@@ -1,0 +1,30 @@
+-> 10 HTML tags:
+<h1>
+<h2>
+<h3>
+<p>
+<ul>
+<li>
+<a>
+<nav>
+<main>
+<section>
+<span>
+<div>
+<img>
+<figcaption>
+
+-> 5 CSS properties:
+min-width
+height
+display
+font-size
+padding
+margin
+background-image
+background-size
+text-align
+border
+
+-> Brief description of how you chose to use JavaScript and Bootstrap:
+With Bootstrap I made navigaton menu. With Javascrit created some modal in "like.html" page.

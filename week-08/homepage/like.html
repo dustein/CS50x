@@ -3,7 +3,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
@@ -36,51 +36,41 @@
         </header>
 
         <main>
+            <div id="janela-modal" class="meu-modal">
+                <div class="meu-modal-content">
+                    <span class="close-modal" onclick="close_button()">&times;</span>
+                    <p id="texto-modal"></p>
+                </div>
+            </div>
+            
             <h2 class="title">Some Stuff I Like</h2>
 
             <section class="like">
 
-                <!-- Trigger/Open The Modal -->
-                <button id="liga-modal">Open Modal</button>
-                <!-- The Modal -->
-                <div id="janela-modal" class="meu-modal">
-                    <!-- Modal content -->
-                    <div class="meu-modal-content">
-                        <span class="close-modal">&times;</span>
-                        <p id="texto-modal">Some text in the Modal..</p>
-                    </div>
+
+                <div class="likes" id="football" onclick="football_modal()">
+                    <h3>Footbal</h3>
+                    <img class="foto" src="https://yt3.googleusercontent.com/ytc/AIdro_nNYinaLuPFoPatbajonncYgt85Tt-4S4CrlIEaDN80TuQ=s900-c-k-c0x00ffffff-no-rj"/>
+                    <figcaption>Fluminense</figcaption>
                 </div>
 
-
-                <div class="likes" id="football">
-                    <button onclick="choose_like(e)">
-                        <h3>Footbal</h3>
-                        <img class="foto" src="https://yt3.googleusercontent.com/ytc/AIdro_nNYinaLuPFoPatbajonncYgt85Tt-4S4CrlIEaDN80TuQ=s900-c-k-c0x00ffffff-no-rj"/>
-                        <figcaption>Fluminense</figcaption>
-                    </button>
-                </div>
-
-                <div class="likes" id="music" onclick="choose_like(e)">
+                <div class="likes" id="music" onclick="music_modal()">
                     <h3>Music</h3>
                     <img class="foto" src="https://cdn11.bigcommerce.com/s-etaxb7aidf/images/stencil/1280x1280/products/3780/7506/ST8915__93916.1588886055.png?c=1"/>
                     <figcaption>Ramones</figcaption>
                 </div>
 
-                <div class="likes" id="adventure">
+                <div class="likes" id="adventure" onclick="adventure_modal()">
                     <h3>Adventure</h3>
                     <img class="foto" src="https://advanywhere.com/wp-content/uploads/2021/09/DSC00355-1920x1280.jpg"/>
                     <figcaption>Motorcycle</figcaption>
                 </div>
 
-                <div class="likes" id="ido">
+                <div class="likes" id="ido" onclick="ido_modal()">
                     <h3>I Do</h3>
                     <img class="foto" src="https://www.espine.in/blog/wp-content/uploads/2022/08/software-developer.jpg"/>
                     <figcaption>Programing</figcaption>
                 </div>
-
-
-
-
 
             </section>
 

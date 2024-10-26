@@ -24,16 +24,41 @@ def after_request(response):
 
 @app.route("/", methods=["GET", "POST"])
 def index():
+
     if request.method == "POST":
 
         # TODO: Add the user's entry into the database
+        name = request.form.get("name")
+        if not name:
+            return redirect("/")
 
+        month = request.form.get("month")
+        if not month:
+            return redirect("/")
+        try:
+            month = int(month)
+        except ValueError:
+            return redirect("/")
+        if month < 1 or month > 12:
+            redirect("/")
+
+        day = request.form.get("day")
+        if not day:
+            return redirect("/")
+        try:
+            day = int(day)
+        except ValueError:
+            return redirect("/")
+        if day < 1 or day > 31:
+            redirect("/")
+
+#        print("O nome e " + name)
+        db.execute("INSERT INTO birthdays (name, month, day) VALUES (?, ?, ?)", name, month, day)
         return redirect("/")
 
     else:
 
         # TODO: Display the entries in the database on index.html
+        birthdays = db.execute("SELECT * FROM birthdays")
 
-        return render_template("index.html")
-
-
+        return render_template("index.html", birthdays = birthdays)

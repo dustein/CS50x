@@ -112,7 +112,38 @@ def quote():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     """Register user"""
-    return apology("TODO")
+
+    if (request.method == "POST"):
+
+        username = request.form.get("username")
+        registered_user = db.execute("SELECT * FROM users WHERE username = ?", username)
+        password = request.form.get("password")
+        confirm_password = request.form.get("confirm_password")
+
+        # Testar se existe o username
+        if (not username):
+            return apology("You must inform an Username.")
+        elif (registered_user):
+            return apology("This Username is already taken.")
+
+        # Comparar se as senhas inseridas são iguais
+        elif (password != confirm_password):
+            return apology("The Password and Password Confirmation didin't match.")
+
+        # Quando tudo der certo...
+
+        else:
+            # gerar o hash pro password informado
+            hash_password = generate_password_hash(password, method='scrypt', salt_length=16)
+
+            #gravar o novo usuario
+            db.execute("INSERT INTO users (username, hash) VALUES (?,?)", username, hash_password)
+
+            return render_template("/login.html")
+
+    # Se o metodo for GET
+    else:
+        return render_template("/register.html")
 
 
 @app.route("/sell", methods=["GET", "POST"])

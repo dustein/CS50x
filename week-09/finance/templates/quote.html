@@ -6,6 +6,11 @@
 
 {% block main %}
   <form action="/quote" method="post">
-    <input type="text" autofocus name="symbol" placeholder="Stock Symbol">
+    <div class="mb-3">
+      <input type="text" autofocus name="symbol" placeholder="Stock Symbol" class="form-control mx-auto w-auto">
+    </div>
+    <div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
   </form>
 {% endblock %}

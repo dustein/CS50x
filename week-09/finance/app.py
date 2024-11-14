@@ -35,14 +35,48 @@ def after_request(response):
 @login_required
 def index():
     """Show portfolio of stocks"""
-    return apology("TODO")
-
+        
+    return render_template("index.html")
 
 @app.route("/buy", methods=["GET", "POST"])
 @login_required
 def buy():
     """Buy shares of stock"""
-    return apology("TODO")
+    if (request.method == "POST"):
+        search_symbol = request.form.get("symbol")
+        found_symbol = lookup(search_symbol)
+        symbol = str(found_symbol["symbol"])
+        shares = int(request.form.get("shares"))
+        current_price = found_symbol["price"]
+        total_cost = shares * current_price
+        user_id = session["user_id"]
+        get_user_cash = db.execute("SELECT cash FROM users WHERE id=?", user_id)
+        user_cash = get_user_cash[0]["cash"]
+
+        if (not search_symbol):
+            return apology("You need to inform the Stock Symbol to Search.")
+
+        if (not found_symbol):
+            return apology("That Stock Symbol dos not exist.")
+
+        if(shares < 1):
+            return apology("Invalid number.")
+
+        if (current_price * shares > user_cash):
+            return apology("You don't have enought money.")
+
+        print(user_id)
+        print(symbol)
+        print(shares)
+        print(current_price)
+        print(total_cost)
+
+        db.execute("INSERT INTO buyshare (user_id, symbol, shares, share_cost, total_cost) VALUES (?, ?, ?, ?, ?)", user_id, symbol, shares, current_price, total_cost)
+
+        return render_template("bought.html", symbol=symbol, shares=shares, current_price=current_price, total_cost=total_cost)
+
+    else:
+        return render_template("buy.html")
 
 
 @app.route("/history")
@@ -106,15 +140,13 @@ def logout():
 @login_required
 def quote():
     """Get stock quote."""
-    if (request.method == "GET"):
-        return render_template("/quote.html")
-
-    elif (request.method == "POST"):
+    if (request.method == "POST"):
         search_symbol = request.form.get("symbol")
-        db.execute(
-            "SELECT 
-        )
-        return search_symbol
+        found_symbol = lookup(search_symbol)
+        return render_template("/quoted.html", result=found_symbol)
+
+    else:
+        return render_template("/quote.html")
 
 @app.route("/register", methods=["GET", "POST"])
 def register():

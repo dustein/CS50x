@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block Title %}
+    Owned Shares
+{% endblock %}
+
+{% block main %}
+
+    <h1>My Stock Shares</h1>
+    <div>
+        <table class="table table-primary">
+            <thead>
+                <tr class="table-primary">
+                    <th>Symbol</th>
+                    <th>Quantity</th>
+                    <th>Price per Share</th>
+                    <th>Total Cost</th>
+                </tr>
+                <tr class="table-light">
+                    <td>{{ symbol }}</td>
+                    <td>{{ shares }}</td>
+                    <td>{{ current_price }}</td>
+                    <td>{{ total_cost }}</td>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+{% endblock %}

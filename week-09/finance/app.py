@@ -35,8 +35,31 @@ def after_request(response):
 @login_required
 def index():
     """Show portfolio of stocks"""
-    symbol = db.execute("SELECT symbol FROM buyshare WHERE user_id = 1 GROUP BY symbol")
-    return render_template("index.html", symbol=symbol)
+    user_id = session["user_id"]
+    symbols = db.execute("SELECT symbol, SUM(shares) AS shares FROM buyshare WHERE user_id = ? GROUP BY symbol", user_id)
+    user_cash = db.execute("SELECT cash FROM users WHERE id = ?", user_id)
+    us_user_cash = usd((user_cash[0]['cash']))
+    stock_index = []
+    indice = 1
+    current_total_shares = 0
+    for item in symbols:
+        current_price = lookup(item['symbol'])['price']
+        current_total = usd(current_price * item['shares'])
+        current_total_shares += current_price * item['shares']
+        atual = {
+            "indice": indice,
+            "symbol": item['symbol'],
+            "shares": item['shares'],
+            "current_price": current_price,
+            "current_total": current_total,
+        }
+        indice +=1
+        stock_index.append(atual)
+
+    current_prop = usd(current_total_shares + user_cash[0]['cash'])
+    print(current_prop)
+    return render_template("index.html", stock_index=stock_index, user_cash=us_user_cash, current_prop=current_prop)
+
 
 @app.route("/buy", methods=["GET", "POST"])
 @login_required
@@ -71,7 +94,9 @@ def buy():
         print(current_price)
         print(total_cost)
 
+        actual_cash = user_cash - current_price * shares
         db.execute("INSERT INTO buyshare (user_id, symbol, shares, share_cost, total_cost) VALUES (?, ?, ?, ?, ?)", user_id, symbol, shares, current_price, total_cost)
+        db.execute("UPDATE users SET cash = ? WHERE id=?", actual_cash, user_id)
 
         return render_template("bought.html", symbol=symbol, shares=shares, current_price=current_price, total_cost=total_cost)
 
@@ -143,6 +168,9 @@ def quote():
     if (request.method == "POST"):
         search_symbol = request.form.get("symbol")
         found_symbol = lookup(search_symbol)
+        print(found_symbol)
+        if (found_symbol == None):
+            return apology("That Symbol Does Not Exists...")
         return render_template("/quoted.html", result=found_symbol)
 
     else:
@@ -189,4 +217,7 @@ def register():
 @login_required
 def sell():
     """Sell shares of stock"""
+    user_id = session["user_id"]
+    stock_list = db.execute("SELECT symbol, SUM(shares) as shares FROM buyshare WHERE user_id = ? GROUP BY symbol", user_id)
+    print(stock_list)
     return apology("TODO")

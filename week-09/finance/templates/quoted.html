@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    {{search_symbol}}
+{% endblock %}
+
+{% block main %}
+    <h1>{{result.symbol}}</h1>
+    <h2>{{result.name}}</h2>
+    <p>Price for share: {{ result.price | usd }}</p>
+{% endblock %}

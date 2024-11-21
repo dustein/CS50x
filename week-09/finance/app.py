@@ -57,7 +57,7 @@ def index():
         stock_index.append(atual)
 
     current_prop = usd(current_total_shares + user_cash[0]['cash'])
-    print(current_prop)
+    # print(current_prop)
     return render_template("index.html", stock_index=stock_index, user_cash=us_user_cash, current_prop=current_prop)
 
 
@@ -87,12 +87,6 @@ def buy():
 
         if (current_price * shares > user_cash):
             return apology("You don't have enought money.")
-
-        print(user_id)
-        print(symbol)
-        print(shares)
-        print(current_price)
-        print(total_cost)
 
         actual_cash = user_cash - current_price * shares
         db.execute("INSERT INTO buyshare (user_id, symbol, shares, share_cost, total_cost) VALUES (?, ?, ?, ?, ?)", user_id, symbol, shares, current_price, total_cost)
@@ -168,7 +162,7 @@ def quote():
     if (request.method == "POST"):
         search_symbol = request.form.get("symbol")
         found_symbol = lookup(search_symbol)
-        print(found_symbol)
+        # print(found_symbol)
         if (found_symbol == None):
             return apology("That Symbol Does Not Exists...")
         return render_template("/quoted.html", result=found_symbol)
@@ -220,4 +214,5 @@ def sell():
     user_id = session["user_id"]
     stock_list = db.execute("SELECT symbol, SUM(shares) as shares FROM buyshare WHERE user_id = ? GROUP BY symbol", user_id)
     print(stock_list)
-    return apology("TODO")
+    
+    return render_template("/sell.html", stock_list=stock_list)

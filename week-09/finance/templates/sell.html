@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+    {% block Title %}
+        Sell Shares
+    {% endblock %}
+
+    {% block main %}
+        <h2>Sell Shares</h2>
+        <div class="container py-3 text-center">
+            <form action="/sell" method="post">
+                <div>
+                    <select class="form-select mx-auto w-auto" autofocus label="stocks" name="stocks">
+                        <option disabled="" selected="">Select Stock to Sell</option>
+                        {% for item in stock_list %}
+                            <option value="{{ item.symbol }}">{{ item.symbol }} ({{item.shares}})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <input class="form-control text-center mx-auto w-auto m-3" autocomplete="off" min=0 name="shares" placeholder="number of shares" type="number">
+                <button type="submit" class="btn btn-danger">GO and Sell !</button>
+            </form>
+        </div>
+    {% endblock %}

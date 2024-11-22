@@ -36,7 +36,8 @@ def after_request(response):
 def index():
     """Show portfolio of stocks"""
     user_id = session["user_id"]
-    symbols = db.execute("SELECT symbol, SUM(shares) AS shares FROM buyshare WHERE user_id = ? GROUP BY symbol", user_id)
+    # symbols = db.execute("SELECT symbol, SUM(shares) AS shares FROM buyshare WHERE user_id = ? GROUP BY symbol", user_id)
+    symbols = db.execute("SELECT symbol, shares FROM wallet WHERE user_id = ? AND shares <> 0", user_id)
     user_cash = db.execute("SELECT cash FROM users WHERE id = ?", user_id)
     us_user_cash = usd((user_cash[0]['cash']))
     stock_index = []
@@ -89,6 +90,14 @@ def buy():
             return apology("You don't have enought money.")
 
         actual_cash = user_cash - current_price * shares
+        # pesquisa se na wallet do user ja tem o symbol
+        exist_stock = db.execute("SELECT symbol, shares FROM wallet WHERE user_id = ? AND symbol = ?", user_id, symbol)
+        if (exist_stock):
+            new_shares = shares + exist_stock[0]['shares']
+            db.execute("UPDATE wallet SET shares = ? WHERE user_id = ? AND symbol = ?", new_shares, user_id, symbol)
+        elif (not exist_stock ):
+            db.execute("INSERT INTO wallet (user_id, symbol, shares, share_cost, total_cost) VALUES (?, ?, ?, ?, ?)", user_id, symbol, shares, current_price, total_cost)
+
         db.execute("INSERT INTO buyshare (user_id, symbol, shares, share_cost, total_cost) VALUES (?, ?, ?, ?, ?)", user_id, symbol, shares, current_price, total_cost)
         db.execute("UPDATE users SET cash = ? WHERE id=?", actual_cash, user_id)
 
@@ -212,7 +221,34 @@ def register():
 def sell():
     """Sell shares of stock"""
     user_id = session["user_id"]
-    stock_list = db.execute("SELECT symbol, SUM(shares) as shares FROM buyshare WHERE user_id = ? GROUP BY symbol", user_id)
+    stock_list = db.execute("SELECT symbol, shares FROM wallet WHERE user_id = ? AND shares <> 0", user_id)
+    print("stock_list:::::")
     print(stock_list)
-    
-    return render_template("/sell.html", stock_list=stock_list)
+
+    if (request.method=="POST"):
+        sell_symbol = request.form.get("symbol")
+        sell_shares = request.form.get("shares")
+        print("check_symbol:::::")
+        check_symbol = db.execute("SELECT shares FROM wallet WHERE user_id = ? AND symbol = ?", user_id, sell_symbol)
+        print(check_symbol[0]['shares'])
+
+        if (sell_symbol == None):
+            return apology("Are you sure you selected it right?")
+        elif (int(sell_shares) > int(check_symbol[0]['shares'])):
+            return apology("You don't have that much shares to sell...")
+        else:
+            sold_shares = int(check_symbol[0]['shares']) - int(sell_shares)
+            print("sold_shares:::::")
+            print(sold_shares)
+            db.execute("UPDATE wallet SET shares = ? WHERE user_id=? AND symbol = ?", sold_shares, user_id, sell_symbol)
+            user_cash = db.execute("SELECT cash FROM users WHERE id = ?", user_id)
+            stock_price = lookup(sell_symbol)
+            new_cash = user_cash[0]['cash'] + stock_price['price']
+            db.execute("UPDATE users SET cash = ? WHERE id = ?", new_cash, user_id)
+
+
+        return redirect("/")
+
+    # Se metodo for GET
+    else:
+        return render_template("/sell.html", stock_list=stock_list)

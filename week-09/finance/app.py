@@ -38,14 +38,17 @@ def index():
     user_id = session["user_id"]
     # symbols = db.execute("SELECT symbol, SUM(shares) AS shares FROM buyshare WHERE user_id = ? GROUP BY symbol", user_id)
     symbols = db.execute("SELECT symbol, shares FROM wallet WHERE user_id = ? AND shares <> 0", user_id)
-    user_cash = db.execute("SELECT cash FROM users WHERE id = ?", user_id)
-    us_user_cash = usd((user_cash[0]['cash']))
+    get_user_cash = db.execute("SELECT cash FROM users WHERE id = ?", user_id)
+    print(get_user_cash)
+    user_cash = round(get_user_cash[0]['cash'])
+    print("user_cash:::::")
+    print(user_cash)
     stock_index = []
     indice = 1
     current_total_shares = 0
     for item in symbols:
         current_price = lookup(item['symbol'])['price']
-        current_total = usd(current_price * item['shares'])
+        current_total = current_price * item['shares']
         current_total_shares += current_price * item['shares']
         atual = {
             "indice": indice,
@@ -57,9 +60,10 @@ def index():
         indice +=1
         stock_index.append(atual)
 
-    current_prop = usd(current_total_shares + user_cash[0]['cash'])
-    # print(current_prop)
-    return render_template("index.html", stock_index=stock_index, user_cash=us_user_cash, current_prop=current_prop)
+    current_prop = current_total_shares + user_cash
+    print("current_prop:::::")
+    print(current_prop)
+    return render_template("index.html", stock_index=stock_index, user_cash=user_cash, current_prop=current_prop)
 
 
 @app.route("/buy", methods=["GET", "POST"])
@@ -68,28 +72,37 @@ def buy():
     """Buy shares of stock"""
     if (request.method == "POST"):
         search_symbol = request.form.get("symbol")
+
         found_symbol = lookup(search_symbol)
+        if (not found_symbol):
+            return apology("That Stock Symbol dos not exist.")
+
         symbol = str(found_symbol["symbol"])
         shares = int(request.form.get("shares"))
         current_price = found_symbol["price"]
         total_cost = shares * current_price
         user_id = session["user_id"]
         get_user_cash = db.execute("SELECT cash FROM users WHERE id=?", user_id)
-        user_cash = get_user_cash[0]["cash"]
+        user_cash = round(get_user_cash[0]["cash"])
+        print("user_cash:::::")
+        print(user_cash)
 
         if (not search_symbol):
             return apology("You need to inform the Stock Symbol to Search.")
 
-        if (not found_symbol):
-            return apology("That Stock Symbol dos not exist.")
+
 
         if(shares < 1):
             return apology("Invalid number.")
 
         if (current_price * shares > user_cash):
             return apology("You don't have enought money.")
-
+        print("user_cash:")
+        print(user_cash)
         actual_cash = user_cash - current_price * shares
+        print("actual_cash:")
+        print(actual_cash)
+
         # pesquisa se na wallet do user ja tem o symbol
         exist_stock = db.execute("SELECT symbol, shares FROM wallet WHERE user_id = ? AND symbol = ?", user_id, symbol)
         if (exist_stock):
@@ -101,7 +114,8 @@ def buy():
         db.execute("INSERT INTO buyshare (user_id, symbol, shares, share_cost, total_cost) VALUES (?, ?, ?, ?, ?)", user_id, symbol, shares, current_price, total_cost)
         db.execute("UPDATE users SET cash = ? WHERE id=?", actual_cash, user_id)
 
-        return render_template("bought.html", symbol=symbol, shares=shares, current_price=current_price, total_cost=total_cost)
+        # return render_template("bought.html", symbol=symbol, shares=shares, current_price=current_price, total_cost=total_cost)
+        return redirect("/")
 
     else:
         return render_template("buy.html")
@@ -222,15 +236,11 @@ def sell():
     """Sell shares of stock"""
     user_id = session["user_id"]
     stock_list = db.execute("SELECT symbol, shares FROM wallet WHERE user_id = ? AND shares <> 0", user_id)
-    print("stock_list:::::")
-    print(stock_list)
 
     if (request.method=="POST"):
         sell_symbol = request.form.get("symbol")
         sell_shares = request.form.get("shares")
-        print("check_symbol:::::")
         check_symbol = db.execute("SELECT shares FROM wallet WHERE user_id = ? AND symbol = ?", user_id, sell_symbol)
-        print(check_symbol[0]['shares'])
 
         if (sell_symbol == None):
             return apology("Are you sure you selected it right?")
@@ -238,12 +248,11 @@ def sell():
             return apology("You don't have that much shares to sell...")
         else:
             sold_shares = int(check_symbol[0]['shares']) - int(sell_shares)
-            print("sold_shares:::::")
-            print(sold_shares)
             db.execute("UPDATE wallet SET shares = ? WHERE user_id=? AND symbol = ?", sold_shares, user_id, sell_symbol)
             user_cash = db.execute("SELECT cash FROM users WHERE id = ?", user_id)
             stock_price = lookup(sell_symbol)
-            new_cash = user_cash[0]['cash'] + stock_price['price']
+            new_cash = user_cash[0]['cash'] + (int(stock_price['price']) * int(sell_shares))
+
             db.execute("UPDATE users SET cash = ? WHERE id = ?", new_cash, user_id)
 
 

@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{% block Title %}
+    Add Cash to Wallet
+{% endblock %}
+
+{% block main %}
+    <h2 class="mb-4">Add Cash to Wallet</h2>
+    <div class="mb-4 container-lg fs-3">
+        <p>You Cash:</p>
+        <p class="fw-bolder">{{user_cash | usd}}</p>
+    </div>
+    <div class="mb-4">
+        <p>Insert Value to Add:</p>
+        <form action="/add_cash" method="post">
+            <div class="mb-3">
+                <input type="number" name="add-cash" placeholder=" Add cash" class="form-control mx-auto w-auto" min="0">
+            </div>
+            <div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+
+        </form>
+    </div>
+{% endblock %}
+

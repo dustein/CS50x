@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+
+{% block Title %}
+    Transaction History
+{% endblock %}
+
+{% block main %}
+    <h2>Transaction History</h2>
+        <table class="table table-hover table-sm">
+            <thead>
+                <tr class="table-primary">
+                    <th>Op ID</th>
+                    <th>Symbol</th>
+                    <th>Price</th>
+                    <th>Shares</th>
+                    <th>Op Total</th>
+                    <th>Operation</th>
+                    <th>Date Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in transactions %}
+                    {% if row.operation == "buy" %}
+                        <tr class="table-success">
+                    {% elif row.operation == "deposit" %}
+                        <tr class="table-light">
+                    {%  else %}
+                        <tr class="table-danger">
+                    {% endif %}
+                        <td>{{row.trans_id}}</td>
+                        {% if row.symbol == "not" %}
+                            <td>-</td>
+                        {% else %}
+                            <td>{{row.symbol}}</td>
+                        {% endif %}
+                        {% if row.share_cost == 0 %}
+                            <td>-</td>
+                        {% else %}
+                            <td>{{row.share_cost | usd}}</td>
+                        {% endif %}
+                        {% if row.shares == 0 %}
+                            <td>-</td>
+                        {% else %}
+                            <td>{{row.shares}}</td>>
+                        {% endif %}
+                        <td>{{row.total_cost | usd}}</td>
+                        <td>{{row.operation}}</td>
+                        <td>{{row.created_at}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+{% endblock %}

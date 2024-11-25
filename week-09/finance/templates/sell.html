@@ -9,7 +9,7 @@
         <div class="container py-3 text-center">
             <form action="/sell" method="post">
                 <div>
-                    <select class="form-select mx-auto w-auto" autofocus label="symbol" name="symbol">
+                    <select class="form-select mx-auto w-auto" autofocus name="symbol">
                         <option disabled="" selected="">Select Stock to Sell</option>
                         {% for item in stock_list %}
                             <option value="{{ item.symbol }}">{{ item.symbol }} ({{item.shares}})</option>

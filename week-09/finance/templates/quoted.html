@@ -1,11 +1,14 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    {{search_symbol}}
+  Stock Quote
 {% endblock %}
 
 {% block main %}
-    <h1>{{result.symbol}}</h1>
-    <h2>{{result.name}}</h2>
-    <p>Price for share: {{ result.price | usd }}</p>
+    <h2 class="mb-4">Quote Stock Share</h2>
+    <div>
+        <h3 class="mb-4">{{found_symbol.name}}</h3>
+        <p class="mb-4 fw-bolder fs-1">{{found_symbol.symbol}}</p>
+        <p class="mb-4 fw-bolder fs-3">{{found_symbol.price | usd}}</p>
+    </div>
 {% endblock %}

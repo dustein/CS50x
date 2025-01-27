@@ -18,7 +18,8 @@ try:
         data = file.readlines()
         count = 0
         for line in data:
-            if line.lstrip().startswith("#") or line == "\n":
+            # count = sum(1 for line in data if not (line.lstrip().startswith("#") or line.strip() == ""))
+            if line.lstrip().startswith("#") or line.lstrip() == "":
                 pass
             else:
                 count += 1

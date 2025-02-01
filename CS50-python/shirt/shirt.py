@@ -1,6 +1,6 @@
 import sys
 import os
-from PIL import Image
+from PIL import Image, ImageOps
 
 def main():
     if len(sys.argv) < 3:
@@ -15,14 +15,24 @@ def main():
     if not img_in.endswith((".jpg", ".jpeg", ".png")) or not img_out.endswith((".jpg", ".jpeg", ".png")):
         print("Invalid input")
         sys.exit(1)
-    # elif not img_in.split(".")[1] == img_out.split(".")[1]:
     elif not os.path.splitext(img_in)[1] == os.path.splitext(img_out)[1]:
         print("Input and output have different extensions")
         sys.exit(1)
 
     try:
-        with Image.open(img_in) as image_in:
-            ...
+        with Image.open(img_in) as image_in, Image.open("shirt.png") as shirt:
+            # pega o tamanho da imagem
+            get_size = image_in.size
+            print(get_size)
+            # redimensiona a shirt pro tamanho da imagem
+            ImageOps.fit(shirt, get_size)
+            # sobrepoe a shirt na imagem
+            image_in.paste(img_in, (0, 0), shirt)
+            shirt.save(img_out)
+
+
+
+
 
     except(FileNotFoundError):
         print("File not found")

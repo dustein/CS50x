@@ -4,14 +4,11 @@ from tabulate import tabulate
 
 def main():
     if len(sys.argv) < 2:
-        print("Too few command-line arguments")
-        sys.exit(1)
+        sys.exit("Too few command-line arguments")
     elif len(sys.argv) > 2:
-        print("Too many command-line arguments")
-        sys.exit(1)
+        sys.exit("Too many command-line arguments")
     elif not sys.argv[1].endswith(".csv"):
-        print("not a CSV file")
-        sys.exit(1)
+        sys.exit("not a CSV file")
 
     menu = []
 
@@ -23,8 +20,7 @@ def main():
                 menu.append(row)
 
     except(FileNotFoundError):
-        print("filenotfou error")
-        sys.exit(1)
+        sys.exit("file not found error")
 
     print(tabulate(menu, headers='firstrow', tablefmt="grid"))
 

@@ -1,15 +1,12 @@
 import sys
 
 if len(sys.argv) < 2:
-    print("Too few command-line arguments")
-    sys.exit(1)
+    sys.exit("Too few command-line arguments")
 elif len(sys.argv) > 2:
-    print("Too many command-line arguments")
-    sys.exit(1)
+    sys.exit("Too many command-line arguments")
 
 if sys.argv[1].endswith(".py") == False:
-    print("Not a Python file")
-    sys.exit(1)
+    sys.exit("Not a Python file")
 
 file_name = sys.argv[1]
 
@@ -25,5 +22,5 @@ try:
                 count += 1
         print(count)
 except FileNotFoundError:
-    print("File does not exist")
-    sys.exit(1)
+    sys.exit("File does not exist")
+    

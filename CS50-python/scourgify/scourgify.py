@@ -4,19 +4,16 @@ import csv
 def main():
 
     if len(sys.argv) < 3:
-        print("Too few command-line arguments")
-        sys.exit(1)
-    elif len(sys.argv) > 3:
-        print("Too many command-line arguments")
-        sys.exit(1)
-    elif not (sys.argv[1]).endswith(".csv"):
-        print(f"Could not read {sys.argv[1]}")
-        sys.exit(1)
-    elif not (sys.argv[2]).endswith(".csv"):
-        print(f"'{sys.argv[2]}' is not a valid file")
-        sys.exit(1)
+        sys.exit("Too few command-line arguments")
 
-    # students = []
+    elif len(sys.argv) > 3:
+        sys.exit("Too many command-line arguments")
+
+    elif not (sys.argv[1]).endswith(".csv"):
+        sys.exit(f"Could not read {sys.argv[1]}")
+
+    elif not (sys.argv[2]).endswith(".csv"):
+        sys.exit(f"'{sys.argv[2]}' is not a valid file")
 
     try:
         with open(sys.argv[1]) as before, open(sys.argv[2], "w") as after:
@@ -38,8 +35,7 @@ def main():
                 # students.append({"first": first.strip(), "last": last, "house": row["house"]})
 
     except(FileNotFoundError):
-        print("arquivo nao encontrado")
-        sys.exit(1)
+        sys.exit("arquivo nao encontrado")
 
 
 if __name__ == "__main__":

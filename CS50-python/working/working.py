@@ -8,7 +8,8 @@ def main():
 
 def convert(s):
     # padrao = r"^(?:([0-9]|1[0-2])(?::[0-5][0-9])?\s?(AM|PM))\s?to\s?(?:([0-9]|1[0-2])(?::[0-5][0-9])?\s?(AM|PM))$"
-    padrao = r"^((?:[0-9]|1[0-2])(?::[0-5][0-9])?\s?(?:AM|PM))\s?to\s?((?:[0-9]|1[0-2])(?::[0-5][0-9])?\s?(?:AM|PM))$"
+    # padrao = r"^((?:[0-9]|1[0-2])(?::[0-5][0-9])?\s?(?:AM|PM))\s?to\s?((?:[0-9]|1[0-2])(?::[0-5][0-9])?\s?(?:AM|PM))$"
+    padrao = r"^(([0-9]|1[0-2])(?::([0-5][0-9]))?\s?([AP]M))\s?to\s?(([0-9]|1[0-2])(?::([0-5][0-9]))?\s?([AP]M))$"
     try:
         timeGiven = re.search(padrao, s)
         if timeGiven == None:
@@ -17,16 +18,28 @@ def convert(s):
     except ValueError:
         return 1
 
-    converted = timeGiven.group(0)
+    print(timeGiven.group(0))
+    print("1:")
+    print(timeGiven.group(1))
+    print("2:")
     print(timeGiven.group(2))
-
-    hora = timeGiven.group(1)
-    minutos = timeGiven.group(2)
+    print("3:")
+    print(timeGiven.group(3))
+    print("4:")
+    print(timeGiven.group(4))
+    print("5:")
+    print(timeGiven.group(5))
+    print("6:")
+    print(timeGiven.group(6))
+    print("7:")
+    print(timeGiven.group(7))
+    print("8:")
+    print(timeGiven.group(8))
 
     if minutos == None:
         minutos == "00"
 
-    am_pm = converted.group(3).upper()
+    # am_pm = converted.group(3).upper()
 
     if am_pm == "AM":
         if hora == 12:

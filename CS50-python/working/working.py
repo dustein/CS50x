@@ -85,13 +85,13 @@ def convert(s):
         # Hours: 9 AM to 5 PM
         # ('9', None, 'AM', '5', None, 'PM')
 
-    start_hour_24 = converte_24(start_hour, start_ampm)
-    end_hour_24 = converte_24(end_hour, end_ampm)
+    start_hour_24 = converte_24(int(start_hour), start_ampm)
+    end_hour_24 = converte_24(int(end_hour), end_ampm)
 
     start_min = start_min if start_min else "00"
     end_min = end_min if end_min else "00"
 
-    return f'{start_hour_24}:{start_min} to {end_hour_24}:{end_min}'
+    return f'{start_hour_24:02}:{start_min} to {end_hour_24:02}:{end_min}'
 
 def converte_24(hora, ampm):
     if ampm.upper() == "AM":
